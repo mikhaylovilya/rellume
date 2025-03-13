@@ -35,18 +35,18 @@ class PlainObjectWriter : public llvm::MCObjectWriter {
 public:
     PlainObjectWriter(llvm::raw_pwrite_stream& stream) : stream(stream) {}
 
-    void executePostLayoutBinding(llvm::MCAssembler& Asm, const llvm::MCAsmLayout& Layout) override {}
-    void recordRelocation(llvm::MCAssembler &Asm, const llvm::MCAsmLayout &Layout,
+    void executePostLayoutBinding(llvm::MCAssembler& Asm) override {}
+    void recordRelocation(llvm::MCAssembler &Asm,
                           const llvm::MCFragment *Fragment,
                           const llvm::MCFixup &Fixup, llvm::MCValue Target,
                           uint64_t &FixedValue) override {
         assert(false && "relocations not supported");
     }
-    uint64_t writeObject(llvm::MCAssembler &Asm, const llvm::MCAsmLayout &Layout) override {
+    uint64_t writeObject(llvm::MCAssembler &Asm) override {
         uint64_t offset = stream.tell();
         for (llvm::MCSection& sec : Asm) {
-            assert(sec.getKind().isText() && "non-text sections not supported");
-            Asm.writeSectionData(stream, &sec, Layout);
+            assert(sec.isText() && "non-text sections not supported");
+            Asm.writeSectionData(stream, &sec);
         }
         return stream.tell() - offset;
     }
@@ -178,8 +178,7 @@ int main(int argc, char** argv) {
         }
 
         llvm::MCStreamer* streamer = target->createMCObjectStreamer(triple, ctx,
-                            std::move(mab), std::move(ow), std::move(mce), *sti,
-                            options.MCRelaxAll, false, false);
+                            std::move(mab), std::move(ow), std::move(mce), *sti);
         if (streamer == nullptr) {
             std::cerr << "error getting MCObjectStreamer" << std::endl;
             return 1;

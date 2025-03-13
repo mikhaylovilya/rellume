@@ -15,7 +15,7 @@ if get_option('warning_level').to_int() >= 3
   endif
 endif
 
-llvm_version = ['>=16', '<19']
+llvm_version = ['>=16', '<20']
 # First, attempt to use the shared library.
 libllvm = dependency('llvm', version: llvm_version, static: false,
                      method: 'config-tool', include_type: 'system',
@@ -54,6 +54,8 @@ endif
 foreach arch : architectures
   add_project_arguments(['-DRELLUME_WITH_@0@'.format(arch.to_upper())], language: 'cpp')
 endforeach
+
+add_project_arguments(['-DCMAKE_EXPORT_COMPILE_COMMANDS=1'], language: 'cpp')
 
 rellume_inc = include_directories('include', 'data')
 subdir('data/rellume')

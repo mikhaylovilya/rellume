@@ -32,6 +32,7 @@
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/Type.h>
 #include <llvm/IR/Value.h>
+#include <llvm/ADT/SmallPtrSet.h>
 #include <cassert>
 
 

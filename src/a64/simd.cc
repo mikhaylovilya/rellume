@@ -400,7 +400,7 @@ bool Lifter::LiftSIMD(farmdec::Inst a64) {
 
             // Fixed-point, so move binary point by multiplying by 2^{fbits}.
             if (a64.fcvt.fbits > 0) {
-                auto scale = llvm::ConstantFP::get(TypeOf(prec), pow(2.0, (double) a64.fcvt.fbits));
+                auto scale = llvm::ConstantFP::get(TypeOf(prec), (double)(1LL << a64.fcvt.fbits));
                 fp = irb.CreateFMul(fp, scale);
             }
 
@@ -414,7 +414,7 @@ bool Lifter::LiftSIMD(farmdec::Inst a64) {
             // Fixed-point, so move binary point by multiplying by 2^{fbits}.
             if (a64.fcvt.fbits > 0) {
                 farmdec::FPSize prec = fad_size_from_vec_arrangement(va);
-                auto scale = llvm::ConstantFP::get(TypeOf(prec), pow(2.0, (double) a64.fcvt.fbits));
+                auto scale = llvm::ConstantFP::get(TypeOf(prec), (double)(1LL << a64.fcvt.fbits));
                 auto scalevec = irb.CreateVectorSplat(NumElem(va), scale);
                 fpvec = irb.CreateFMul(fpvec, scalevec);
             }
@@ -434,7 +434,7 @@ bool Lifter::LiftSIMD(farmdec::Inst a64) {
 
             // Fixed-point, so move binary point right by dividing by 2^{fbits}.
             if (a64.fcvt.fbits > 0) {
-                auto scale = llvm::ConstantFP::get(TypeOf(prec), pow(2.0, (double) a64.fcvt.fbits));
+                auto scale = llvm::ConstantFP::get(TypeOf(prec), (double)(1LL << a64.fcvt.fbits));
                 fp = irb.CreateFDiv(fp, scale);
             }
 
@@ -447,7 +447,7 @@ bool Lifter::LiftSIMD(farmdec::Inst a64) {
             // Fixed-point, so move binary point right by dividing by 2^{fbits}.
             if (a64.fcvt.fbits > 0) {
                 farmdec::FPSize prec = fad_size_from_vec_arrangement(va);
-                auto scale = llvm::ConstantFP::get(TypeOf(prec), pow(2.0, (double) a64.fcvt.fbits));
+                auto scale = llvm::ConstantFP::get(TypeOf(prec), (double)(1LL << a64.fcvt.fbits));
                 auto scalevec = irb.CreateVectorSplat(NumElem(va), scale);
                 fp = irb.CreateFDiv(fp, scalevec);
             }
