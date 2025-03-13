@@ -21,8 +21,11 @@ class Assembler:
         self.arch = arch
     def assemble(self, code):
         self.proc.stdin.write("!ASM " + code + "\n")
+        print(code)
         self.proc.stdin.flush()
-        res = bytes.fromhex(self.proc.stdout.readline().strip())
+        half_res = self.proc.stdout.readline().strip()
+        res = bytes.fromhex(half_res)
+        print(half_res)
         if self.arch == "x86_64":
             return res, b"\xcc" # term: int 3
         if self.arch == "rv64":

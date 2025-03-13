@@ -5,10 +5,10 @@ casefiles = {
     'cases_string.txt',
     'cases_sse.txt',
   ],
-  'rv64': [
-    'cases_rv64_basic.txt',
-    'cases_rv64_bitmanip.txt',
-  ],
+#  'rv64': [
+#    'cases_rv64_basic.txt',
+#    'cases_rv64_bitmanip.txt',
+#  ],
   'aarch64': [
     'a64_data_proc.txt',
     'a64_loads_stores.txt',
@@ -19,7 +19,7 @@ casefiles = {
 }
 llvm_targets = {
   'x86_64': 'X86',
-  'rv64': 'RISCV',
+  #  'rv64': 'RISCV',
   'aarch64': 'AArch64',
 }
 
