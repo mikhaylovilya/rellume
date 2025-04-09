@@ -735,7 +735,7 @@ bool Lifter::Lift(const Instr& inst) {
 
         // Fixed-point, so move binary point by multiplying by 2^{fbits}.
         if (a64.fcvt.fbits > 0) {
-            auto scale = llvm::ConstantFP::get(TypeOf(fad_get_prec(a64.flags)), pow(2.0, (double) a64.fcvt.fbits));
+            auto scale = llvm::ConstantFP::get(TypeOf(fad_get_prec(a64.flags)), (double)(1LL << a64.fcvt.fbits));
             fp = irb.CreateFMul(fp, scale);
         }
 
@@ -753,7 +753,7 @@ bool Lifter::Lift(const Instr& inst) {
 
         // Fixed-point, so move binary point right by dividing by 2^{fbits}.
         if (a64.fcvt.fbits > 0) {
-            auto scale = llvm::ConstantFP::get(TypeOf(fad_get_prec(a64.flags)), pow(2.0, (double) a64.fcvt.fbits));
+            auto scale = llvm::ConstantFP::get(TypeOf(fad_get_prec(a64.flags)), (double)(1LL << a64.fcvt.fbits));
             fp = irb.CreateFDiv(fp, scale);
         }
         SetScalar(a64.rd, fp);
